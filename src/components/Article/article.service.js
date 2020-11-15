@@ -19,7 +19,9 @@ class ArticleService extends react.Component {
       return db;
     }
   
-  
+  get(id){
+    return db.child(id);
+  }
 
   create(article) {
     return db.push(article);

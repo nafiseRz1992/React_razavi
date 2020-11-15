@@ -8,6 +8,10 @@ import Signup from "pages/Signup";
 import Main from "components/Main";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
+
+
 export default function App() {
   return (
     <AuthProvider>

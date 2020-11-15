@@ -5,6 +5,7 @@ import TopBar from "components/TopBar";
 import Articles from "pages/Articles";
 import AddArticle from "pages/AddArticle";
 import { PrivateRoute } from "helpers";
+import EditArticle from "pages/Articles/EditArticle";
 
 export default function Main() {
   return (
@@ -14,7 +15,9 @@ export default function Main() {
         <Switch>
           <Route exact path={["/", "/articles"]} component={Articles} />
           <PrivateRoute exact path="/add" component={AddArticle} />
+          <Route path="/post/:id" exact component={EditArticle} />  
           <Route component={() => <h1>Not Found</h1>} />
+              
         </Switch>
       </Container>
     </>

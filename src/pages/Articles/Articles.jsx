@@ -1,25 +1,30 @@
 import React,{useState,useEffect} from "react";
 import * as firebase from "services";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from '@material-ui/core/Button';
-import EditArticle from "./EditArticle"
-const db = firebase.db.ref("/articles");
+//import Button from '@material-ui/core/Button';
+import { Link} from "react-router-dom";
 
+const db = firebase.db.ref("/articles");
 export default function Articles() {
-  const [curentId,setcurentId]=useState('');
+  //const [curentId,setcurentId]=useState('');
   const [ArticleList,setArticleList]=useState( []);
-    
+  const [idlist,setidlist]=useState( []);
 useEffect(()=>{
-db.child('Articles').on("value", snapshot => {
+db.on("value", snapshot => {
   let ArticleList = [];
+  let idlist=[];
   snapshot.forEach(snap => {
       // snap.val() is the dictionary with all your keys/values from the 'students-list' path
-     ArticleList.push(snap.val()); 
+     ArticleList.push(snap.val());
+     idlist.push(snap.key);
+   
   });
-  setArticleList(  ArticleList );
-});   
+  setArticleList(ArticleList);
+  setidlist(idlist)
+}); 
+
 },[])
-const addOrEdit = (obj) => {  
+/*const addOrEdit = (obj) => {  
   if (curentId === '')  
         db.child('Articles').push(  
           obj,  
@@ -39,7 +44,7 @@ const addOrEdit = (obj) => {
                  setcurentId('')  
           })  
 }  
- 
+ */
   return (
    
     <div className="MainDiv">
@@ -48,11 +53,8 @@ const addOrEdit = (obj) => {
     </div>
   
     <div className="row">
-       <div className="col-md-5">
-       <EditArticle  {...({addOrEdit,curentId,ArticleList})}/>
-       </div>
-       <div className="col-md-7">
-       <div className="MainDiv">
+      
+      
         
       
         <div className="container">
@@ -61,6 +63,7 @@ const addOrEdit = (obj) => {
                   <tr>
                       <th>title</th>
                       <th>body</th>
+                      <th>amage</th>
                       <th>action</th>
                       
                   </tr>
@@ -72,7 +75,14 @@ const addOrEdit = (obj) => {
                       <tr key={id}> 
                       <td>{ArticleList[id].title}</td>    
                       <td>{ArticleList[id].body}</td>
-                      <td> <Button  onClick={ () => setcurentId( id )} >Edit</Button > </td>
+                      <td><img src={ArticleList[id].imageURL} width="80px"/></td>
+                      <td> 
+                         <Link  variant="button"
+                          color="textPrimary"
+                          to={`/post/${idlist[id]}`}
+                         
+                         >Show post </Link>
+                          </td>
                       </tr>
                       
                   );
@@ -83,10 +93,11 @@ const addOrEdit = (obj) => {
        
            </table>
             
-       </div>
        
-      </div>
+       
+      
        </div>
+ 
     </div>
 </div>
   );
